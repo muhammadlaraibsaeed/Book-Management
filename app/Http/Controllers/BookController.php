@@ -107,9 +107,9 @@ class BookController extends Controller
         $file = $request->file('image');
 
         $validatedData = $request->validate([
-            'title' => 'required|max:255|min:10|unique:books',
+            'title' => 'required|max:255|min:10',
             'description' => 'required',
-            'isbn' => 'required|regex:/^\d{4}-\d{4}-\d{4}$/i|unique:books',
+            'isbn' => 'required|regex:/^\d{4}-\d{4}-\d{4}$/i',
             'price' => 'required|numeric',
             'page' => 'required|numeric',
             'pdate' => 'required|date_format:m/d/Y',
