@@ -40,6 +40,8 @@
                             </div>
                 </form>
                     <a href="{{ route('books.show',$book->id) }}" class="btn btn-info mt-2"> search </a>
+                    {{-- <a href="{{ route('books.show',$book->id) }}" class="btn btn-info mt-2"> search </a> --}}
+
                    @else
                    <p class="btn btn-primary">Unable</p>
             @endcan

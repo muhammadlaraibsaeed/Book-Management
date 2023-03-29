@@ -14,11 +14,7 @@
                 <img class="card-img-top img-thumbnail" src="{{ asset('storage/'.$book->image) }}" alt="Book Image">
                 <div class="card-body">
                     <h4 class="card-title d-flex justify-content-lg-around bg-info">{{ $book->title }}</h4>
-                    <h4 class="card-title bg-secondary p-2"> <span class="d-block mb-2 text-justify"><span>{{ $book->description }}</span></h4>
-                    <h4 class="card-title d-flex justify-content-lg-around bg-info"> <span>ISBN</span> <span>{{ $book->isbn }}</span></h4>
-                    <h4 class="card-title d-flex justify-content-lg-around bg-info"> <span>Public Date</span> <span>{{ $book->pdate }}</span></h4>
-                    <h4 class="card-title d-flex justify-content-lg-around bg-info"> <span>Price</span> <span>{{ $book->pdate }}</span></h4>
-                    <h4 class="card-title d-flex justify-content-lg-around bg-info"> <span>number of page</span> <span>{{ $book->page }}</span></h4>
+                    <a href="{{ route('books.show',$book->id) }}" class="btn btn-info mt-2"> Read More </a>
                 </div>
             </div>
             </div>

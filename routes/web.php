@@ -33,6 +33,6 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
 
-Route::resource('books',BookController::class)->middleware('auth');
+Route::resource('books',BookController::class);
 
 Route::get('addBook',[BookController::class,'form'])->name('addBook.form')->middleware('auth');

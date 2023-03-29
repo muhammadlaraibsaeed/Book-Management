@@ -21,6 +21,8 @@ class BookController extends Controller
     public function __construct()
     {
         // $this->authorizeResource(Book::class, 'index');
+
+        $this->middleware('auth')->except('show');
     }
 
     public function index(Book $book)
@@ -44,9 +46,9 @@ class BookController extends Controller
         $file = $request->file('image');
 
         $validatedData =$request->validate([
-            'title' => 'required|max:255|min:10',
+            'title' => 'required|max:255|min:10|unique:books',
             'description' => 'required',
-            'isbn' => 'required',
+            'isbn' => 'required|numeric',
             'price' => 'required|numeric',
             'page' => 'required|numeric',
             'pdate' => 'required|date_format:m/d/Y',
