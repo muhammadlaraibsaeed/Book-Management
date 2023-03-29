@@ -48,7 +48,7 @@ class BookController extends Controller
         $validatedData =$request->validate([
             'title' => 'required|max:255|min:10|unique:books',
             'description' => 'required',
-            'isbn' => 'required|numeric',
+            'isbn' => 'required|regex:/^\d{4}-\d{4}-\d{4}$/i',
             'price' => 'required|numeric',
             'page' => 'required|numeric',
             'pdate' => 'required|date_format:m/d/Y',
@@ -109,7 +109,7 @@ class BookController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|max:255|min:10|unique:books',
             'description' => 'required',
-            'isbn' => 'required|numeric',
+            'isbn' => 'required|regex:/^\d{4}-\d{4}-\d{4}$/i|unique:books',
             'price' => 'required|numeric',
             'page' => 'required|numeric',
             'pdate' => 'required|date_format:m/d/Y',
@@ -120,7 +120,7 @@ class BookController extends Controller
         $validatedData['image'] = $file->storeAs('Book Image', $file->getClientOriginalName());
         $validatedData['user_id'] = Auth::user()->id;
         $book->fill($validatedData);
-        $book->save();  
+        $book->save();
 
         return redirect('/books');
     }

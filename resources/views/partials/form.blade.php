@@ -31,7 +31,7 @@
                             <label for="isbn" class="col-md-4 col-form-label text-md-end">{{ __('ISBN') }}</label>
 
                             <div class="col-md-6">
-                                <input id="isbn" type="text" class="form-control @error('isbn') is-invalid @enderror" name="isbn" value="{{ old('isbn',optional($book ?? null)->isbn) }}" >
+                                <input id="isbn" type="text" class="form-control @error('isbn') is-invalid @enderror" name="isbn" value="{{ old('isbn',optional($book ?? null)->isbn) }}" placeholder="0000-0000-0000" >
 
                                 @error('isbn')
                                     <span class="invalid-feedback" role="alert">
