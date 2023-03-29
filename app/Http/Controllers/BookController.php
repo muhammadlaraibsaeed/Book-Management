@@ -120,7 +120,7 @@ class BookController extends Controller
         $validatedData['image'] = $file->storeAs('Book Image', $file->getClientOriginalName());
         $validatedData['user_id'] = Auth::user()->id;
         $book->fill($validatedData);
-        $book->save();
+        $book->save();  
 
         return redirect('/books');
     }
