@@ -28,7 +28,7 @@
       <td><img src="{{ asset('storage/'.$book->image) }}" alt="Book image" title="Book image" style="width: 36px;"></td>
       <td>{{ $book->isbn }}</td>
       <td>{{ $book->pdate }}</td>
-      <td>{{ $book->price }}</td>
+      <td>${{ $book->price }}</td>
       <td>{{ $book->page }}</td>
         <td>
             @can('delete-post', $book)
