@@ -10,6 +10,13 @@
                    <form method="POST" action="{{ route('books.store')   }}" enctype="multipart/form-data">
                         @csrf
                         @include('partials.form')
+                           <div class="row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    {{ __('Register') }}
+                                </button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
