@@ -78,6 +78,54 @@ class BookController extends Controller
 
     }
 
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $book = Book::findorfail($id);
+        return view('edit', compact('book'));
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+
+        $book = Book::findorfail($id);
+
+        $file = $request->file('image');
+
+        $validatedData = $request->validate([
+            'title' => 'required|max:255|min:10|unique:books',
+            'description' => 'required',
+            'isbn' => 'required|numeric',
+            'price' => 'required|numeric',
+            'page' => 'required|numeric',
+            'pdate' => 'required|date_format:m/d/Y',
+            'image' => 'required|image|mimes:png,jpg,jpeg,gif'
+        ]);
+
+        // dd(Auth::user()->id);
+        $validatedData['image'] = $file->storeAs('Book Image', $file->getClientOriginalName());
+        $validatedData['user_id'] = Auth::user()->id;
+        $book->fill($validatedData);
+        $book->save();
+
+        return redirect('/books');
+    }
+
+
     /**
      * Remove the specified resource from storage.
      *

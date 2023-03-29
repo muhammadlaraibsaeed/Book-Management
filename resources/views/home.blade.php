@@ -40,7 +40,7 @@
                             </div>
                 </form>
                     <a href="{{ route('books.show',$book->id) }}" class="btn btn-info mt-2"> search </a>
-                    {{-- <a href="{{ route('books.show',$book->id) }}" class="btn btn-info mt-2"> search </a> --}}
+                    <a href="{{ route('books.edit',$book->id) }}" class="btn btn-secondary mt-2"> Update </a>
 
                    @else
                    <p class="btn btn-primary">Unable</p>
