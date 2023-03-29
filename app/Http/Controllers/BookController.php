@@ -88,7 +88,10 @@ class BookController extends Controller
     public function edit($id)
     {
         $book = Book::findorfail($id);
-        return view('edit', compact('book'));
+        $file = $book->image;
+        $filename = explode('/',$file);
+        $image = $filename[1];
+        return view('edit', compact('book','image'));
 
     }
 
@@ -116,7 +119,6 @@ class BookController extends Controller
             'image' => 'required|image|mimes:png,jpg,jpeg,gif'
         ]);
 
-        // dd(Auth::user()->id);
         $validatedData['image'] = $file->storeAs('Book Image', $file->getClientOriginalName());
         $validatedData['user_id'] = Auth::user()->id;
         $book->fill($validatedData);
