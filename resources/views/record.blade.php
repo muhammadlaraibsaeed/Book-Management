@@ -9,7 +9,7 @@
         <a href="{{ route('books.index') }}" class="btn btn-primary mb-3">Book Management</a>
     @endguest
 
-        <h1 class="blockquote">Author : {{ Auth::user()->name }}</h1>
+        <h1 class="blockquote">Author : {{ $books->user->name }}</h1>
             <div class="col mt-2">
             <div class="card" >
                 <img class="card-img-top img-thumbnail" src="{{ asset('storage/'.$books->image) }}" alt="Book Image">
