@@ -116,7 +116,7 @@ class BookController extends Controller
             'price' => 'required|numeric',
             'page' => 'required|numeric',
             'pdate' => 'required|date_format:m/d/Y',
-            'image' => 'required|image|mimes:png,jpg,jpeg,gif'
+            'image' => 'image|mimes:png,jpg,jpeg,gif'
         ]);
 
         $validatedData['image'] = $file->storeAs('Book Image', $file->getClientOriginalName());

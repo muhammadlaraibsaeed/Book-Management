@@ -30,9 +30,6 @@ Auth::routes();
 // after login it will login that page
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-
-
-
 Route::resource('books',BookController::class);
 
 Route::get('addBook',[BookController::class,'form'])->name('addBook.form')->middleware('auth');
