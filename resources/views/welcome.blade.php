@@ -11,7 +11,7 @@
     @forelse ($books as $book)
             <div class="col-md-4 mt-2">
             <div class="card" >
-                <img class="card-img-top img-thumbnail" src="{{ asset('storage/'.$book->image) }}" alt="Book Image">
+                <img class="card-img-top img-thumbnail" src="{{ asset($book->image) }}" alt="Book Image">
                 <div class="card-body">
                     <h4 class="card-title d-flex justify-content-lg-around bg-info">{{ $book->title }}</h4>
                     <a href="{{ route('books.show',$book->id) }}" class="btn btn-info mt-2"> Read More </a>

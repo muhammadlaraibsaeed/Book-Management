@@ -56,8 +56,13 @@ class BookController extends Controller
         ]);
 
         // dd(Auth::user()->id);
-        $validatedData['image'] =$file->storeAs('Book Image',$file->getClientOriginalName());
+
+
+        $validatedData['image'] =$file->storeAs("images",$file->getClientOriginalName());
         $validatedData['user_id']=Auth::user()->id;
+
+        $request->image->move(public_path('images'), $validatedData['image']);
+
             Book::create($validatedData);
 
 

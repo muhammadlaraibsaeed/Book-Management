@@ -25,7 +25,7 @@
       <th scope="row">{{ $num }}</th>
       <td>{{ $book->title }}</td>
       <td>{{ $book->description }}</td>
-      <td><img src="{{ asset('storage/'.$book->image) }}" alt="Book image" title="Book image" style="width: 36px;"></td>
+      <td><img src="{{ asset($book->image) }}" alt="Book image" title="Book image" style="width: 36px;"></td>
       <td>{{ $book->isbn }}</td>
       <td>{{ $book->pdate }}</td>
       <td>${{ $book->price }}</td>
