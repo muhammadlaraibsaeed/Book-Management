@@ -12,7 +12,7 @@
         <h1 class="blockquote">Author : {{ $books->user->name }}</h1>
             <div class="col mt-2">
             <div class="card" >
-                <img class="card-img-top img-thumbnail" src="{{ asset('storage/'.$books->image) }}" alt="Book Image">
+                <img class="card-img-top img-thumbnail" src="{{ asset($books->image) }}" alt="Book Image">
                 <div class="card-body">
                     <h4 class="card-title d-flex justify-content-lg-around bg-info">{{ $books->title }}</h4>
                     <h4 class="card-title bg-secondary p-2"> <span class="d-block mb-2 text-justify"><span>{{ $books->description }}</span></h4>

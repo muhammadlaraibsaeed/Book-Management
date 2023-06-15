@@ -20,6 +20,7 @@ use NunoMaduro\Collision\Adapters\Phpunit\Style;
 
 Route::get('/', function () {
     $books = Book::all();
+
     return view('welcome',compact('books'));
 });
 

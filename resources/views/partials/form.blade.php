@@ -3,7 +3,7 @@
 
                             <div class="col-md-6">
                                 <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title',optional($book ?? null)->title) }}"  autocomplete="name" autofocus>
-
+                                <p class="alert alert-primary mt-1" id="title_error" style="display: none"></p>
                                 @error('title')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -93,6 +93,6 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div>
+       </div>
 
 

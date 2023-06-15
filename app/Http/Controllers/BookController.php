@@ -9,6 +9,7 @@ use function GuzzleHttp\Promise\all;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
@@ -41,32 +42,25 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        // for handling image
-
-        $file = $request->file('image');
-
-        $validatedData =$request->validate([
-            'title' => 'required|max:255|min:10|unique:books',
-            'description' => 'required',
-            'isbn' => 'required|regex:/^\d{4}-\d{4}-\d{4}$/i',
-            'price' => 'required|numeric',
-            'page' => 'required|numeric',
-            'pdate' => 'required|date_format:m/d/Y',
-            'image' => 'required|image|mimes:png,jpg,jpeg,gif'
-        ]);
-
-        // dd(Auth::user()->id);
-
-
-        $validatedData['image'] =$file->storeAs("images",$file->getClientOriginalName());
-        $validatedData['user_id']=Auth::user()->id;
-
-        $request->image->move(public_path('images'), $validatedData['image']);
-
-            Book::create($validatedData);
-
-
-          return redirect('/home');
+        $arra = $request->all();
+        $validatedData = Validator::make($request->all(),
+            [
+                'title' => 'required|max:255|min:10|unique:books',
+                'description' => 'required',
+                'isbn' => 'required|regex:/^\d{4}-\d{4}-\d{4}$/i',
+                'price' => 'required|numeric',
+                'page' => 'required|numeric',
+                'pdate' => 'required|date_format:m/d/Y'
+            ]
+            );
+        $arra['user_id']=Auth::user()->id;
+        $arra['image'] = "Muhammad";
+        if($validatedData->fails())
+        {
+            return response()->json($validatedData->errors(), 422);
+        }
+            Book::create($arra);
+         return response()->json(['Message']);
 
     }
 
@@ -76,6 +70,7 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
+
     public function show(Book $book)
     {
         $books = Book::findorfail($book->id);
@@ -123,10 +118,13 @@ class BookController extends Controller
             'pdate' => 'required|date_format:m/d/Y',
             'image' => 'image|mimes:png,jpg,jpeg,gif'
         ]);
-
-        $validatedData['image'] = $file->storeAs('Book Image', $file->getClientOriginalName());
+        $validatedData['image'] = $file->storeAs('images', $file->getClientOriginalName());
         $validatedData['user_id'] = Auth::user()->id;
+
         $book->fill($validatedData);
+
+        $request->image->move(public_path('images'), $validatedData['image']);
+
         $book->save();
 
         return redirect('/books');
@@ -141,7 +139,6 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-
 
         if(!Gate::allows('delete-post',$book)){
             abort(403,"You Can not delete Record");

@@ -16,7 +16,7 @@
                     <h4 class="card-title d-flex justify-content-lg-around bg-info">{{ $book->title }}</h4>
                     <a href="{{ route('books.show',$book->id) }}" class="btn btn-info mt-2"> Read More </a>
                 </div>
-            </div>
+             </div>
             </div>
             @empty
              <h1>No data Avaiable</h1>

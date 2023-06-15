@@ -11,13 +11,11 @@
                         @csrf
                         @method('PUT')
                         @include('partials.form')
-
                            <div class="row mb-3">
                             <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('Cover Image') }}</label>
 
                             <div class="col-md-6">
-                                <img src="{{ asset('storage/'.$book->image) }}" alt="Book image" title="Book image" style="width: 100px;">
-
+                                <img src="{{ asset($book->image) }}" alt="Book image" title="Book image" style="width: 100px;">
                                 @error('image')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
