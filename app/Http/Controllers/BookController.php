@@ -26,11 +26,21 @@ class BookController extends Controller
         $this->middleware('auth')->except('show');
     }
 
-    public function index(Book $book)
+    public function index(Request $request)
     {
-
+// dd($request->ajax());
         $books = Book::all();
-        return view('home',compact('books'));
+        if($request->ajax())
+        {
+            return view('partials.table', compact('books'));
+
+        }
+        else
+        {
+
+            return view('home',compact('books'));
+
+        }
     }
 
 
@@ -42,6 +52,8 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
+
         $arra = $request->all();
         $validatedData = Validator::make($request->all(),
             [
@@ -54,13 +66,19 @@ class BookController extends Controller
             ]
             );
         $arra['user_id']=Auth::user()->id;
-        $arra['image'] = "Muhammad";
+        $arra['image'] = "high";
         if($validatedData->fails())
         {
             return response()->json($validatedData->errors(), 422);
         }
-            Book::create($arra);
-         return response()->json(['Message']);
+        Book::create($arra);
+
+        // return response()->json(['Messgae'=>"Successfully updated"]);
+
+        $books = Book::all();
+
+        return view('partials.table', compact('books'));
+
 
     }
 
@@ -118,15 +136,12 @@ class BookController extends Controller
             'pdate' => 'required|date_format:m/d/Y',
             'image' => 'image|mimes:png,jpg,jpeg,gif'
         ]);
+
         $validatedData['image'] = $file->storeAs('images', $file->getClientOriginalName());
         $validatedData['user_id'] = Auth::user()->id;
-
         $book->fill($validatedData);
-
         $request->image->move(public_path('images'), $validatedData['image']);
-
         $book->save();
-
         return redirect('/books');
     }
 
