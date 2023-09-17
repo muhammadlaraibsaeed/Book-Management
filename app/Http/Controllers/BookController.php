@@ -21,15 +21,14 @@ class BookController extends Controller
 
     public function __construct()
     {
-        // $this->authorizeResource(Book::class, 'index');
 
         $this->middleware('auth')->except('show');
     }
 
     public function index(Request $request)
     {
-// dd($request->ajax());
         $books = Book::all();
+
         if($request->ajax())
         {
             return view('partials.table', compact('books'));
@@ -52,9 +51,10 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
-
         $arra = $request->all();
+
+        $file = $request->file('BookFrame');
+
         $validatedData = Validator::make($request->all(),
             [
                 'title' => 'required|max:255|min:10|unique:books',
@@ -62,15 +62,21 @@ class BookController extends Controller
                 'isbn' => 'required|regex:/^\d{4}-\d{4}-\d{4}$/i',
                 'price' => 'required|numeric',
                 'page' => 'required|numeric',
-                'pdate' => 'required|date_format:m/d/Y'
+                'pdate' => 'required|date_format:m/d/Y',
+                'BookFrame' => 'required|image|mimes:png,jpg,jpeg,gif'
             ]
             );
         $arra['user_id']=Auth::user()->id;
-        $arra['image'] = "high";
+
+
+        $arra['image'] = $file->storeAs('images', $file->getClientOriginalName());
+
         if($validatedData->fails())
         {
             return response()->json($validatedData->errors(), 422);
         }
+
+        $request->BookFrame->move(public_path('images'), $arra['image']);
         Book::create($arra);
 
         // return response()->json(['Messgae'=>"Successfully updated"]);
@@ -128,12 +134,12 @@ class BookController extends Controller
         $file = $request->file('image');
 
         $validatedData = $request->validate([
-            'title' => 'required|max:255|min:10',
-            'description' => 'required',
-            'isbn' => 'required|regex:/^\d{4}-\d{4}-\d{4}$/i',
-            'price' => 'required|numeric',
-            'page' => 'required|numeric',
-            'pdate' => 'required|date_format:m/d/Y',
+            'title' => '|max:255|min:10',
+            'description' => '',
+            'isbn' => '|regex:/^\d{4}-\d{4}-\d{4}$/i',
+            'price' => '|numeric',
+            'page' => '|numeric',
+            'pdate' => '|date_format:m/d/Y',
             'image' => 'image|mimes:png,jpg,jpeg,gif'
         ]);
 
@@ -154,12 +160,11 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-
         if(!Gate::allows('delete-post',$book)){
             abort(403,"You Can not delete Record");
         }
         $book->delete();
-        return redirect()->route("books.index");
+        return response()->json(['user_id'=>$book->id]);
     }
 
     public function form()

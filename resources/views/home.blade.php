@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
    <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#exampleModal">
                 Add Book
             </button>
@@ -21,7 +21,7 @@
           <form method="POST" action="#" id="myForm" name="myForm" class="form-horizontal" enctype="multipart/form-data" >
                             <div class="form-group">
                                 <label>Title</label>
-                                <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" value="hjdskjhaksjhak">
+                                <input type="text" class="form-control" id="title" name="title" placeholder="Enter title">
                                         <p class="alert alert-danger error title mt-3 error-tag d-none"></p>
 
                             </div>
@@ -43,29 +43,23 @@
                                 <label>Price</label>
                                 <input id="price" type="number" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}" name="price" >
                                         <p class="alert alert-danger price mt-3 error-tag d-none"></p>
-
-
                             </div>
                             <div class="form-group">
                                 <label>Page</label>
                                 <input id="page" type="number" class="form-control @error('page') is-invalid @enderror" value="{{ old('page') }}" name="page" >
                                         <p class="alert alert-danger page mt-3 error-tag d-none"></p>
-
                             </div>
-
                             <div class="form-group">
                                 <label>Published date</label>
                                     <input id="pdate" type="text" class="form-control @error('pdate') is-invalid @enderror" value="{{ old('pdate') }}"  name="pdate" placeholder="mm/dd/yyyy" >
                                         <p class="alert alert-danger pdate mt-3 error-tag d-none"></p>
-
                             </div>
 
+                            <label>Image</label>
                             <div class="form-group">
-                                <label>Image</label>
-                                    <input id="image_id" type="file" onchange="previewFile(this);" class="form-control @error('image_id') is-invalid @enderror" value="{{ old('image_id') }}"  name="image_id" placeholder="mm/dd/yyyy" >
+                                    <input id="BookFrame" type="file" onchange="previewFile(this);" class="form-control @error('BookFrame') is-invalid @enderror" value="{{ old('BookFrame') }}"  name="BookFrame">
                                     <img src="" class="img-thumbnail" id="previewImg" >
-                                        <p class="alert alert-danger  image_id mt-3 error-tag d-none"></p>
-
+                                    <p class="alert alert-danger  BookFrame mt-3 error-tag d-none"></p>
                             </div>
 
                         </form>
@@ -74,83 +68,108 @@
          <button type="button" class="btn btn-primary" id="btn-save" value="add">Save changes
                         </button>
       </div>
-    </div>
-  </div>
 </div>
 
-        <script>
+<script>
 
-$(document).ready(function () {
-    //----- Open model CREATE -----//
-    $("#btn-save").click(function (e) {
-        $.ajaxSetup({
-        headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                 }
-    });
+    $(document).ready(function () {
+        //----- Open model CREATE -----//
+        $("#btn-save").click(function (e) {
 
-        e.preventDefault();
-        var form = $('#myForm')[0];
-        var formData = new FormData(form);
 
-        var state = $('#btn-save').val();
-        var type = "POST";
-        var ajaxurl = "{{ route('books.store') }}";
-        $.ajax({
-            type: type,
-            url: ajaxurl,
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(data) {
-                $('#close_btn').click();
-                fetch_record();
-            },
-            error: function(data) {
-                alert('error');
-                $(".error-tag").addClass("d-none");
-                $.each(data.responseJSON, function(key, value) {
-                console.log(value[0]);
-                $('.' + key).removeClass("d-none").empty().html(value[0]);
-                });
-            }
+            e.preventDefault();
+            var form = $('#myForm')[0];
+            var formData = new FormData(form);
+
+            var state = $('#btn-save').val();
+            var type = "POST";
+            var ajaxurl = "{{ route('books.store') }}";
+            $.ajax({
+                type: type,
+                url: ajaxurl,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    $('#close_btn').click();
+                    fetch_record();
+                },
+                error: function(data) {
+                    $(".error-tag").addClass("d-none");
+                    $.each(data.responseJSON, function(key, value) {
+                    console.log(value[0]);
+                    $('.' + key).removeClass("d-none").empty().html(value[0]);
+                    });
+                }
+            });
         });
     });
-});
 
-$(document).ready(function(){
-fetch_record();
-});
-
-function fetch_record()
-{
-     $.ajax({
-        type:"GET",
-        url:"{{ route('books.index') }}",
-        success:function(data)
-        {
-            $('#table').empty().html(data);
-
-        }
+    $(document).ready(function(){
+        $.ajaxSetup({
+            headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    }
+        });
+             fetch_record();
     });
-}
 
+    function fetch_record()
+    {
+        $.ajax({
+            type:"GET",
+            url:"{{ route('books.index') }}",
+            success:function(data)
+            {
+                $('#table').empty().html(data);
 
-//
-
-// that is use to review the image
-
- function previewFile(input){
-        var file = $("input[type=file]").get(0).files[0];
-
-        if(file){
-            var reader = new FileReader();
-            reader.onload = function(){
-                $("#previewImg").attr("src", reader.result);
             }
-            reader.readAsDataURL(file);
-        }
+        });
     }
-        </script>
+
+    // that is use to review the image
+
+    function previewFile(input)
+        {
+            var file = $("input[type=file]").get(0).files[0];
+
+            if(file){
+                var reader = new FileReader();
+                reader.onload = function(){
+                    $("#previewImg").attr("src", reader.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+        {{-- scripting File --}}
+
+
+        function deleteRecord()
+        {
+
+            $(document).ready(function(){
+
+                    var user_id = $('#deleteRecord').attr('data-id');
+                        // Make an Ajax DELETE request to the server
+                        $.ajax({
+                        type: "DELETE",
+                        url: `{{ route('books.destroy',":user_id") }}`.replace(':user_id', user_id), // Replace with your API endpoint
+                        success: function (response) {
+
+                            $(".user"+response.user_id).remove();
+                            // Handle success, e.g., remove the deleted record from the UI
+                            console.log("Record deleted successfully.");
+                        },
+                        error: function (error) {
+                            // Handle error, e.g., show an error message
+                            console.error("Error deleting record: " + error.statusText);
+                        },
+                });
+            });
+
+        }
+
+
+</script>
 
 @endsection

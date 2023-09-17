@@ -17,24 +17,19 @@
 
           <?php $num = 1; ?>
       @foreach ($books as $book)
-    <tr>
+    <tr class="user{{$book->id}}" id="user-id">
       <th scope="row">{{ $num }}</th>
       <td>{{ $book->title }}</td>
       <td>{{ $book->description }}</td>
-      <td><img src="{{ asset('images/harrypotter.jpg') }}" alt="Book image" title="Book image" style="width: 36px;"></td>
+      <td><img src="{{ asset($book->image) }}" alt="Book image" title="Book image" style="width: 36px;"></td>
       <td>{{ $book->isbn }}</td>
       <td>{{ $book->pdate }}</td>
       <td>${{ $book->price }}</td>
       <td>{{ $book->page }}</td>
         <td>
             @can('delete-post', $book)
-                <form id="delete-form" method="POST" action="{{ route('books.destroy',$book->id) }}">
-                            @csrf
-                            @method('delete')
-                    <div class="form-group">
-                                <input type="submit" class="btn btn-danger" value="Delete">
-                            </div>
-                </form>
+
+                <a href="" onclick="deleteRecord();event.preventDefault();" id="deleteRecord" data-id="{{$book->id}}"><i class="bi bi-trash3 text-danger"></i></a>
                     <a href="{{ route('books.show',$book->id) }}" class="btn btn-info mt-2"> search </a>
                     <a href="{{ route('books.edit',$book->id) }}" class="btn btn-secondary mt-2"> Update </a>
 
@@ -47,3 +42,5 @@
       @endforeach
   </tbody>
 </table>
+
+
